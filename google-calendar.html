@@ -446,6 +446,11 @@
                 value: false,
                 observer: '_OK'
             },
+            refresh_time: {
+                type: Number,
+                value: 60000,
+                reflectToAttribute: true
+            },
             step: {
                 type:Number,
                 value:0
@@ -473,6 +478,11 @@
             this._OK();
             
         },
+        _resfresh_time: function(){
+            this.$.solicitud.generateRequest();
+            this.$.solicitud2.generateRequest();
+            this.pintarCalendario(this.year,this.month);
+        },
         _paintEvent: function(pYear,pMonth){
             var aux = this.getEvent.items;
             for(var i=0;i<this.getEvent.items.length;i++){
@@ -499,7 +509,7 @@
                  if(newColor)
                  target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor=newColor.background;
                  else
-                 target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#7986CB";
+                 target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#F4511E";
  
                  call.innerHTML = "<a href="+this._compuCalHref(e.htmlLink)+" target='_blank'>"+pinta+"</a>";
                  if(location===undefined){
@@ -526,7 +536,7 @@
                  if(newColor)
                  target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor=newColor.background;
                  else
-                 target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#7986CB";
+                 target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#F4511E";
  
                  call.innerHTML = "<a href="+this._compuCalHref(e.htmlLink)+" target='_blank'>"+pinta+"</a>";
                  if(location===undefined){
@@ -545,6 +555,13 @@
         responseColors: function(e){
             this.colores=e.detail.__data__.response;
             this.okColor=true;
+        },
+        attached: function(){
+            this._interval = window.setInterval(this._resfresh_time.bind(this),this.refresh_time);
+            this.decrease_maintenance();
+        },
+        detached: function(){
+            if(this._interval) window.clearInterval(this._interval);
         },
         _OK: function(){
             if(this.okColor===true&&this.okEvent===true){
@@ -689,9 +706,7 @@
             a = a && b? a:c;a = a && b? a:c;a = a && b? a:c;
             a = a && b? a:c;a = a && b? a:c;a = a && b? a:c;
         },
-        attached: function(){
-            this.decrease_maintenance();
-        },
+
         scrolled: function (evt) {
             this.step += 1;
             var el = evt.currentTarget;
