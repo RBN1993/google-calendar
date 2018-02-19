@@ -427,6 +427,11 @@
                 type: Boolean,
                 value: false,
                 observer: '_OK'
+            },
+            refresh_time: {
+                type: Number,
+                value: 60000,
+                reflectToAttribute: true
             }
         },
         ready: function() {
@@ -452,6 +457,11 @@
             this.okEvent=false;
             this.okColor=false;
             this._OK();
+        },
+        _resfresh_time: function(){
+            this.$.solicitud.generateRequest();
+            this.$.solicitud2.generateRequest();
+            this.pintarCalendario(this.year,this.month);
         },
         _paintEvent: function(pYear,pMonth){
            var aux = this.getEvent.items;
@@ -479,7 +489,7 @@
                 if(newColor)
                 target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor=newColor.background;
                 else
-                target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#7986CB";
+                target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#F4511E";
 
                 call.innerHTML = "<a href="+this._compuCalHref(e.htmlLink)+" target='_blank'>"+pinta+"</a>";
                 if(location===undefined){
@@ -506,7 +516,7 @@
                 if(newColor)
                 target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor=newColor.background;
                 else
-                target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#7986CB";
+                target.getElementsByTagName("td")[pinta+iniciaEnDia-2].style.backgroundColor="#F4511E";
 
                 call.innerHTML = "<a href="+this._compuCalHref(e.htmlLink)+" target='_blank'>"+pinta+"</a>";
                 if(location===undefined){
@@ -525,6 +535,12 @@
         responseColors: function(e){
             this.colores=e.detail.__data__.response;
             this.okColor=true;
+        },
+        attached: function(){
+            this._interval = window.setInterval(this._resfresh_time.bind(this),this.refresh_time);
+        },
+        detached: function(){
+            if(this._interval) window.clearInterval(this._interval);
         },
         _OK: function(){
             if(this.okColor===true&&this.okEvent===true){
