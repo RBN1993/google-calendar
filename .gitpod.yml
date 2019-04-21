@@ -1,0 +1,12 @@
+tasks:
+  - init: >
+
+    command: >
+      npm install -g polymer-cli &&
+      npm install -g bower &&
+      bower install &&
+      echo Run in https://8080-e78d0e0c-a36e-4874-aefa-01d907a66f9c.ws-eu0.gitpod.io/components/google-calendar/demo/ &&
+      polymer serve -H localhost -p 8080
+github:
+    prebuilds:
+        pullRequestsFromForks: true
