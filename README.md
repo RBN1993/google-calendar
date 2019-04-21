@@ -8,5 +8,4 @@ Componente Web basado en la API de Google Calendar donde podrás consultar tus e
 
 # Go to http://localhost:8080/components/google-calendar/
 # GitPod: First open port and then
-# go to https://8080-e78d0e0c-a36e-4874-aefa-01d907a66f9c.ws-eu0.gitpod.io/components/google-calendar/Demo/
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#snapshot/37777bbd-5960-4018-a04b-34f6ba107d2d)
+# Run my Demo here: https://8080-e78d0e0c-a36e-4874-aefa-01d907a66f9c.ws-eu0.gitpod.io/components/google-calendar/Demo/
